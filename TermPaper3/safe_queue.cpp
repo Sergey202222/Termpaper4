@@ -9,12 +9,13 @@ void safe_queue::push(std::packaged_task<void()> package)
 	lgmx.unlock();
 }
 
-void safe_queue::pop()
+std::packaged_task<void()> safe_queue::pop()
 {
 	std::unique_lock<std::mutex> lck(mtx);
 	while (!update) cv.wait(lck);
-	_queue.front()();
+	std::packaged_task<void()> package{ std::move(_queue.front())};
 	_queue.pop();
 	update = false;
 	lck.unlock();
+	return package;
 }

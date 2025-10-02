@@ -29,5 +29,9 @@ void thread_pool::submit(std::packaged_task<void()> package)
 
 void thread_pool::work()
 {
-	s_queue.pop();
+	while (true)
+	{
+		std::packaged_task<void()> package{ s_queue.pop() };
+		package();
+	}
 }

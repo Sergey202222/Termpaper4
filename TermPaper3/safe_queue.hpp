@@ -10,7 +10,7 @@ class safe_queue
 {
 public:
 	void push(std::packaged_task<void()>);
-	void pop();
+	std::packaged_task<void()> pop();
 private:
 	std::queue<std::packaged_task<void()>> _queue;
 	std::mutex mtx;
